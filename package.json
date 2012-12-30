@@ -1,0 +1,15 @@
+{
+    "name": "xld.js",
+    "version": "0.0.1",
+    "description": "Wrapper for the OS X XLD tool",
+    "keywords": ["cli", "xld.js", "xld"],
+    "author": {
+        "name": "Jose Maria Nunez Izu",
+        "email": "<jmnunezizu@gmail.com>"
+    },
+    "dependencies": {
+        "commander": "1.1.1"
+    },
+    "main": "index",
+    "engines": { "node": ">=0.4.0"}
+}
