@@ -1,15 +1,22 @@
 {
-    "name": "xld.js",
+    "name": "tuner",
     "version": "0.0.1",
-    "description": "Wrapper for the OS X XLD tool",
-    "keywords": ["cli", "xld.js", "xld"],
+    "description": "Media tools for the command line",
+    "keywords": ["cli", "tuner.js", "tuner"],
     "author": {
         "name": "Jose Maria Nunez Izu",
         "email": "<jmnunezizu@gmail.com>"
     },
+    "repository": {
+        "type": "git"
+    },
     "dependencies": {
         "commander": "1.1.1"
     },
-    "main": "index",
+    "main": "lib/tuner.js",
+    "bin": {
+        "nbp": "./bin/tuner",
+        "tuner": "./bin/tuner"
+    },
     "engines": { "node": ">=0.4.0"}
 }

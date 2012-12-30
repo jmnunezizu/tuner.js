@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var Tuner = require('../lib/tuner');
+
+program
+    .version(Tuner.version)
+    .usage('[options] <command>...')
+    .option('-v, --verbose', 'Show extra information');
+
+program
+    .command('convert <dir>')
+    .description('Processes the files in the specified directory')
+    .action(
+        function(dir) {
+            var tuner = new Tuner({verbose: program.verbose});
+            tuner.processDirectory(dir);
+        }
+    );
+
+program.parse(process.argv);
