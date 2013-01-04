@@ -18,4 +18,14 @@ program
         }
     );
 
+program
+    .command('clean <dir>')
+    .description('Removes the flac files from the specified directory')
+    .action(
+        function(dir) {
+            var tuner = new Tuner({verbose: program.verbose});
+            tuner.cleanDirectory(dir);
+        }
+    );
+
 program.parse(process.argv);
