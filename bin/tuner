@@ -1,20 +1,39 @@
 #!/usr/bin/env node
 
 var program = require('commander');
+var logger = require('../lib/logger');
 var Tuner = require('../lib/tuner');
 
 program
     .version(Tuner.version)
     .usage('[options] <command>...')
-    .option('-v, --verbose', 'Show extra information');
+    .option('-v, --verbose', 'Show extra information')
+    .option('-d, --debug', 'Enables debug mode')
+    .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');
 
 program
     .command('convert [dir]')
     .description('Processes the files in the specified directory')
     .action(
         function(dir) {
+            if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
             dir = dir || process.cwd();
+            logger.info("Processing the directory '%s'", dir);
             var tuner = new Tuner({verbose: program.verbose});
+            
+            tuner.on('trackProcessed', function(f) {
+                logger.ok("The track '%s' has been processed", f);
+            });
+
+            tuner.on('processingComplete', function() {
+                logger.ok('Finished');
+            });
+            
+            tuner.on('error', function(err, f) {
+                logger.error("There was a problem processing the file '%s'", f);
+                process.exit(1);
+            });
+
             tuner.processDirectory(dir);
         }
     );
@@ -24,8 +43,13 @@ program
     .description('Removes the flac files from the specified directory')
     .action(
         function(dir) {
+            if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
             dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose});
+            logger.info("Processing the directory '%s'", dir);
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
+            tuner.on('fileRemoved', function(file) {
+                logger.ok("The track '%s' has been removed", file);
+            });
             tuner.cleanDirectory(dir);
         }
     );
