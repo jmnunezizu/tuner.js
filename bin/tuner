@@ -9,20 +9,22 @@ program
     .option('-v, --verbose', 'Show extra information');
 
 program
-    .command('convert <dir>')
+    .command('convert [dir]')
     .description('Processes the files in the specified directory')
     .action(
         function(dir) {
+            dir = dir || process.cwd();
             var tuner = new Tuner({verbose: program.verbose});
             tuner.processDirectory(dir);
         }
     );
 
 program
-    .command('clean <dir>')
+    .command('clean [dir]')
     .description('Removes the flac files from the specified directory')
     .action(
         function(dir) {
+            dir = dir || process.cwd();
             var tuner = new Tuner({verbose: program.verbose});
             tuner.cleanDirectory(dir);
         }
