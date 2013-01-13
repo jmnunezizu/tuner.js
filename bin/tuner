@@ -19,7 +19,7 @@ program
             if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
             dir = dir || process.cwd();
             logger.info("Processing the directory '%s'", dir);
-            var tuner = new Tuner({verbose: program.verbose});
+            var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
             
             tuner.on('trackProcessed', function(f) {
                 logger.ok("The track '%s' has been processed", f);
@@ -45,13 +45,29 @@ program
         function(dir) {
             if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
             dir = dir || process.cwd();
-            logger.info("Processing the directory '%s'", dir);
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
+            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
             tuner.on('fileRemoved', function(file) {
                 logger.ok("The track '%s' has been removed", file);
+            });
+            tuner.on('cleanDirectoryError', function(err) {
+                logger.error('The directory has not been processed yet; Please run convert first.')
+                process.exit(1);
             });
             tuner.cleanDirectory(dir);
         }
     );
+
+program
+    .command('add [dir]')
+    .description('Adds the m4a files form the specified directory to iTunes')
+    .action(
+        function(dir) {
+            dir = dir || process.cwd();
+            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
+            tuner.on('fileAdded', function(file) {
+                logger.ok("The track '%s' has been added", file);
+            });
+            tuner.addToItunes(dir);
+        })
 
 program.parse(process.argv);
