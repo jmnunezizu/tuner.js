@@ -3,6 +3,9 @@
 var program = require('commander');
 var logger = require('../lib/logger');
 var Tuner = require('../lib/tuner');
+var util = require('../lib/util');
+var clc = require('cli-color');
+var moment = require('moment');
 
 program
     .version(Tuner.version)
@@ -25,8 +28,16 @@ program
                 logger.ok("The track '%s' has been processed", f);
             });
 
-            tuner.on('processingComplete', function() {
-                logger.ok('Finished');
+            tuner.on('processingComplete', function(stats) {
+                console.log();
+                console.log(util.lpad('', '-', 72));
+                console.log('SUMMARY:')
+                console.log(util.lpad('', '-', 72));
+                console.log(clc.green('Total Files: ') + '%s', stats.totalFiles);
+                console.log(clc.green('Total time: ') + '%s', moment(stats.totalTime).format('HH:mm:ss'));
+                console.log(clc.green('Finished at: ') + '%s', moment(stats.endDate).format('dddd DD MMMM YYYY HH:mm:ss'));
+                console.log(util.lpad('', '-', 72));
+                console.log();
             });
             
             tuner.on('error', function(err, f) {
