@@ -8,7 +8,8 @@
         "email": "<jmnunezizu@gmail.com>"
     },
     "repository": {
-        "type": "git"
+        "type": "git",
+        "url": "https://github.com/jmnunezizu/tuner.js.git"
     },
     "dependencies": {
         "commander": "1.1.1",
