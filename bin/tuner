@@ -23,9 +23,27 @@ program
             dir = dir || process.cwd();
             logger.info("Processing the directory '%s'", dir);
             var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
+
+            // track events
+            tuner.on('preparingFile', function(filename) {
+                logger.ok('Processing the file %s', filename);
+            });
             
+            tuner.on('trackConverted', function(f) {
+                console.log("     Track converted");
+            });
+
+            tuner.on('artworkEmbedded', function(f) {
+                console.log("     Artwork embedded");
+            });
+
             tuner.on('trackProcessed', function(f) {
-                logger.ok("The track '%s' has been processed", f);
+                console.log(clc.green("     done"));
+            });
+
+            // global events
+            tuner.on('preparingDirectory', function(directory) {
+                console.log('     Preparing');
             });
 
             tuner.on('processingComplete', function(stats) {
