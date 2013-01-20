@@ -10,7 +10,6 @@ var moment = require('moment');
 program
     .version(Tuner.version)
     .usage('[options] <command>...')
-    .option('-v, --verbose', 'Show extra information')
     .option('-d, --debug', 'Enables debug mode')
     .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');
 
