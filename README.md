@@ -2,6 +2,37 @@
 
 ## Installation
 
+### Software required
+
+These are the programs that need to be installed and available to be
+executed in the command line from any directory.
+
+#### sips - scriptable image processing system
+This comes pre-installed in OSX. It's a tool for -among other things-
+resizing images. It should be in the path. Try it out by executing the
+following:
+
+```bash
+sips
+```
+
+That should print out the program information.
+
+#### XLD - X Lossless Decoder: Lossless Audio Decoder for OSX
+You can get it [here](http://tmkk.undo.jp/xld/index_e.html).
+
+Once you have it installed, you have to make sure that the xld
+command line tool is installed. The command line version is 
+included in the dmg package; so take it out and put it inside your
+/usr/bin directory.
+
+#### MP4v2 Command Line Tools
+This can be installed quite easily with Homebrew.
+
+```bash
+brew install mp4v2
+```
+
 ## License 
 
 (The MIT License)
