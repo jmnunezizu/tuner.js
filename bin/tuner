@@ -98,4 +98,12 @@ program
             tuner.addToItunes(dir);
         })
 
+program
+    .command('process [dir]')
+    .description('Processes the specified directory. Process is: convert, clean and add.')
+    .action(
+        function(dir) {
+            dir = dir || process.cwd();
+            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
+        })
 program.parse(process.argv);
