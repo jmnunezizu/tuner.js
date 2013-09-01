@@ -24,8 +24,8 @@ program
             var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
 
             // track events
-            tuner.on('preparingFile', function(filename) {
-                logger.ok('Processing the file %s', filename);
+            tuner.on('preparingTrack', function(track) {
+                logger.ok('Processing the track %s', track.filename);
             });
             
             tuner.on('trackConverted', function(f) {
@@ -96,7 +96,8 @@ program
                 logger.ok("The track '%s' has been added", file);
             });
             tuner.addToItunes(dir);
-        })
+        }
+    );
 
 program
     .command('process [dir]')
@@ -105,5 +106,7 @@ program
         function(dir) {
             dir = dir || process.cwd();
             var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
-        })
+        }
+    );
+
 program.parse(process.argv);
