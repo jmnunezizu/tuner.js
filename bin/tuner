@@ -22,7 +22,6 @@ program
         function(dir) {
             if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
             dir = dir || process.cwd();
-            logger.info("Processing the directory '%s'", dir);
             var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
             var reporter = new Detailed(tuner);
             
