@@ -6,7 +6,8 @@ var Tuner = require('../lib/tuner');
 var util = require('../lib/util');
 var clc = require('cli-color');
 var moment = require('moment');
-var package = require('../package')
+var package = require('../package');
+var Detailed = require('./../lib/reporters/detailed');
 
 program
     .version(package.version)
@@ -23,40 +24,7 @@ program
             dir = dir || process.cwd();
             logger.info("Processing the directory '%s'", dir);
             var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
-
-            // track events
-            tuner.on('preparingTrack', function(track) {
-                logger.ok('Processing the track %s', track.filename);
-            });
-            
-            tuner.on('trackConverted', function(f) {
-                console.log("     Track converted");
-            });
-
-            tuner.on('artworkEmbedded', function(f) {
-                console.log("     Artwork embedded");
-            });
-
-            tuner.on('trackProcessed', function(f) {
-                console.log(clc.green("     done"));
-            });
-
-            // global events
-            tuner.on('preparingDirectory', function(directory) {
-                console.log('     Preparing');
-            });
-
-            tuner.on('processingComplete', function(stats) {
-                console.log();
-                console.log(util.lpad('', '-', 72));
-                console.log('SUMMARY:')
-                console.log(util.lpad('', '-', 72));
-                console.log(clc.green('Total Files: ') + '%s', stats.totalFiles);
-                console.log(clc.green('Total time: ') + '%s', moment(stats.totalTime).format('HH:mm:ss'));
-                console.log(clc.green('Finished at: ') + '%s', moment(stats.endDate).format('dddd DD MMMM YYYY HH:mm:ss'));
-                console.log(util.lpad('', '-', 72));
-                console.log();
-            });
+            var reporter = new Detailed(tuner);
             
             tuner.on('error', function(err, f) {
                 logger.error("There was a problem processing the file '%s'", f);
