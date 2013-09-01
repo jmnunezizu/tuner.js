@@ -1,0 +1,7 @@
+{
+	"artwork": {
+		"name": "cover",
+		"supportedFormats": ["jpg", "jpeg", "png"],
+		"size": 500
+	}
+}

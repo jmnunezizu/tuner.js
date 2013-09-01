@@ -6,9 +6,10 @@ var Tuner = require('../lib/tuner');
 var util = require('../lib/util');
 var clc = require('cli-color');
 var moment = require('moment');
+var package = require('../package')
 
 program
-    .version(Tuner.version)
+    .version(package.version)
     .usage('[options] <command>...')
     .option('-d, --debug', 'Enables debug mode')
     .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');

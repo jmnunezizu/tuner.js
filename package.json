@@ -15,7 +15,8 @@
         "commander": "1.1.1",
         "cli-color": "0.2.1",
         "moment": "1.7.2",
-        "async": "0.2.9"
+        "async": "0.2.9",
+        "nconf": "0.6.7"
     },
     "main": "lib/tuner.js",
     "bin": {
