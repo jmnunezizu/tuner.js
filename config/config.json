@@ -1,4 +1,8 @@
 {
+	"library": {
+		"home": "/Users/jmnunezizu/git/tuner.js/library"
+	},
+    "audioFiles": ["flac", "wav"],
 	"artwork": {
 		"name": "cover",
 		"supportedFormats": ["jpg", "jpeg", "png"],

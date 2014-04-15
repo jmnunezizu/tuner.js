@@ -12,7 +12,6 @@ var Detailed = require('./../lib/reporters/detailed');
 program
     .version(package.version)
     .usage('[options] <command>...')
-    .option('-d, --debug', 'Enables debug mode')
     .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');
 
 program
@@ -20,13 +19,14 @@ program
     .description('Processes the files in the specified directory')
     .action(
         function(dir) {
-            if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
+            if (program.dryRun) { logger.info('Running in Dry Run mode'); }
             dir = dir || process.cwd();
-            var tuner = new Tuner({debug: program.debug, verbose: program.verbose, dryRun: program.dryRun});
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
             var reporter = new Detailed(tuner);
             
             tuner.on('error', function(err, f) {
-                logger.error("There was a problem processing the file '%s'", f);
+                //logger.error("There was a problem processing the file '%s'", f);
+                logger.error(err);
                 process.exit(1);
             });
 
@@ -39,9 +39,9 @@ program
     .description('Removes the flac files from the specified directory')
     .action(
         function(dir) {
-            if (program.dryRun) { logger.warn('Running in Dry Run mode'); }
+            if (program.dryRun) { logger.info('Running in Dry Run mode'); }
             dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
             tuner.on('fileRemoved', function(file) {
                 logger.ok("The track '%s' has been removed", file);
             });
@@ -59,7 +59,7 @@ program
     .action(
         function(dir) {
             dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
             tuner.on('fileAdded', function(file) {
                 logger.ok("The track '%s' has been added", file);
             });
@@ -73,7 +73,17 @@ program
     .action(
         function(dir) {
             dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, debug: program.debug, dryRun: program.dryRun});
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
+        }
+    );
+
+program
+    .command('import <dir>')
+    .description('Imports the specified directory')
+    .action(
+        function(dir) {
+            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
+            tuner.import(dir);
         }
     );
 

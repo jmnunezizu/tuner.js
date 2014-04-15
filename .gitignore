@@ -3,3 +3,4 @@ node_modules
 test/sample/.DS_Store
 test/sample/.processed
 test/sample/**/*.m4a
+library
