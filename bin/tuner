@@ -3,7 +3,6 @@
 var program = require('commander');
 var logger = require('../lib/logger');
 var Tuner = require('../lib/tuner');
-var util = require('../lib/util');
 var clc = require('cli-color');
 var moment = require('moment');
 var package = require('../package');

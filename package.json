@@ -23,7 +23,8 @@
     "nconf": "0.6.7",
     "musicmetadata": "0.2.4",
     "debug": "~0.8.1",
-    "itunes": "git+ssh://git@github.com/jmnunezizu/node-itunes.git"
+    "itunes": "git+ssh://git@github.com/jmnunezizu/node-itunes.git",
+    "bash": "0.0.1"
   },
   "main": "lib/tuner.js",
   "bin": {
