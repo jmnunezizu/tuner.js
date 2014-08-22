@@ -10,81 +10,69 @@ var package = require('../package');
 var Detailed = require('./../lib/reporters/detailed');
 
 program
-    .version(package.version)
-    .usage('[options] <command>...')
-    .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');
+  .version(package.version)
+  .usage('[options] <command>...')
+  .option('-D, --dry-run', 'Runs without actually doing anything, i.e. no processing, deletion of files, etc.');
 
 program
-    .command('convert [dir]')
-    .description('Processes the files in the specified directory')
-    .action(
-        function(dir) {
-            if (program.dryRun) { logger.info('Running in Dry Run mode'); }
-            dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
-            var reporter = new Detailed(tuner);
-            
-            tuner.on('error', function(err, f) {
-                //logger.error("There was a problem processing the file '%s'", f);
-                logger.error(err);
-                process.exit(1);
-            });
+  .command('convert [dir]')
+  .description('Processes the files in the specified directory')
+  .action(function (dir) {
+    if (program.dryRun) {
+      logger.info('Running in Dry Run mode');
+    }
+    
+    dir = dir || process.cwd();
+    var tuner = new Tuner({dryRun: program.dryRun});
+    var reporter = new Detailed(tuner);
+    
+    tuner.on('error', function (err, f) {
+      //logger.error("There was a problem processing the file '%s'", f);
+      logger.error(err);
+      process.exit(1);
+    });
 
-            tuner.processDirectory(dir);
-        }
-    );
-
-program
-    .command('clean [dir]')
-    .description('Removes the flac files from the specified directory')
-    .action(
-        function(dir) {
-            if (program.dryRun) { logger.info('Running in Dry Run mode'); }
-            dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
-            tuner.on('fileRemoved', function(file) {
-                logger.ok("The track '%s' has been removed", file);
-            });
-            tuner.on('cleanDirectoryError', function(err) {
-                logger.error('The directory has not been processed yet; Please run convert first.')
-                process.exit(1);
-            });
-            tuner.cleanDirectory(dir);
-        }
-    );
+    tuner.processDirectory(dir);
+  });
 
 program
-    .command('add [dir]')
-    .description('Adds the m4a files form the specified directory to iTunes')
-    .action(
-        function(dir) {
-            dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
-            tuner.on('fileAdded', function(file) {
-                logger.ok("The track '%s' has been added", file);
-            });
-            tuner.addToItunes(dir);
-        }
-    );
+  .command('clean [dir]')
+  .description('Removes the flac files from the specified directory')
+  .action(function (dir) {
+    if (program.dryRun) {
+      logger.info('Running in Dry Run mode');
+    }
+    
+    dir = dir || process.cwd();
+    var tuner = new Tuner({dryRun: program.dryRun});
+    tuner.on('fileRemoved', function (file) {
+      logger.ok("The track '%s' has been removed", file.source);
+    });
+    tuner.on('cleanDirectoryError', function (err) {
+      logger.error('The directory has not been processed yet; Please run convert first.')
+      process.exit(1);
+    });
+    tuner.cleanDirectory(dir);
+  });
 
 program
-    .command('process [dir]')
-    .description('Processes the specified directory. Process is: convert, clean and add.')
-    .action(
-        function(dir) {
-            dir = dir || process.cwd();
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
-        }
-    );
+  .command('add [dir]')
+  .description('Adds the m4a files form the specified directory to iTunes')
+  .action(function (dir) {
+    dir = dir || process.cwd();
+    var tuner = new Tuner({dryRun: program.dryRun});
+    tuner.on('fileAdded', function (file) {
+        logger.ok("The track '%s' has been added", file.source);
+    });
+    tuner.addToItunes(dir);
+  });
 
 program
-    .command('import <dir>')
-    .description('Imports the specified directory')
-    .action(
-        function(dir) {
-            var tuner = new Tuner({verbose: program.verbose, dryRun: program.dryRun});
-            tuner.import(dir);
-        }
-    );
+  .command('process [dir]')
+  .description('Processes the specified directory. Process is: convert, clean and add.')
+  .action(function (dir) {
+    dir = dir || process.cwd();
+    var tuner = new Tuner({dryRun: program.dryRun});
+  });
 
 program.parse(process.argv);
